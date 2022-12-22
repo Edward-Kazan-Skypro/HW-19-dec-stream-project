@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -7,14 +6,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
-       /*
-Напишите метод, находящий в стриме минимальный и максимальный элементы в соответствии порядком, заданным Comparator'ом.
-Найденные минимальный и максимальный элементы передайте в minMaxConsumer следующим образом:
-minMaxConsumer.accept(min, max);
-Если стрим не содержит элементов, то вызовите
-minMaxConsumer.accept(null, null);
-*/
-
     public static <T> void findMinMax(
             Stream<? extends T> stream,
             Comparator<? super T> order,
@@ -28,16 +19,28 @@ minMaxConsumer.accept(null, null);
             minMaxConsumer.accept(null, null);
         }
     }
+    public static int findEvenNumbers(List<Integer> numbersList) {
 
-    public static void main(String[] args) throws Exception {
-        Stream<Integer> stream = new ArrayList<>(Arrays.asList(1, 2, 3, 5, 8, 13, 21)).stream();
+        return (int) numbersList.stream()
+                .filter(i -> i % 2 == 0)
+                .count();
+    }
+
+    public static void main(String[] args) {
+        List<Integer> numbersList = Arrays.asList(2, 9, 14, 7, 99, 113, 111);
+        System.out.println("Исходный массив чисел:\n" + numbersList);
+
+        Stream<Integer> stream1 = numbersList.stream();
+        System.out.println("В этом массиве минимальное и максимальное число:");
 
         findMinMax(
-                stream,
+                stream1,
                 (x, y) -> x.compareTo(y),
-                (x, y) -> System.out.println(String.format("min: %s, max: %s", x, y))
+                (x, y) -> System.out.println("min=" + x + ", max=" + y)
         );
 
-        stream.close();
+        //Стрим штука "одноразовая", поэтому для запуска следующего метода создадим новый стрим
+        Stream<Integer> stream2 = numbersList.stream();
+        System.out.println("Количество четных чисел: " + findEvenNumbers(stream2.toList()));
     }
 }
